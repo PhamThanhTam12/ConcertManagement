@@ -1,0 +1,18 @@
+{
+  "eventId": "ID_CONCERT_DO_MOCKAPI_TRA_VE",
+  "eventTitle": "MIDNIGHT LIVE",
+  "eventStartAt": "2026-12-26T18:00:00+07:00",
+  "eventLocation": "Công viên bờ sông Sài Gòn, TP. Hồ Chí Minh",
+  "ticketTypeId": "vip",
+  "ticketName": "VIP Experience",
+  "unitPrice": 990000,
+  "quantity": 2,
+  "totalPrice": 1980000,
+  "fullName": "Người dùng mẫu",
+  "email": "user@concert.test",
+  "phone": "0901234567",
+  "paymentMethod": "counter",
+  "paymentStatus": "pending",
+  "status": "confirmed",
+  "createdAt": "2026-11-09T11:00:00.000Z"
+}
