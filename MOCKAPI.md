@@ -40,6 +40,8 @@ Các field cũ như category, price, capacity tiếp tục được giữ. Bổ 
 
 Lưu schema bằng **Update**. Ba field cuối phải lưu **mảng thật**, không phải chuỗi chứa JSON. Nghệ sĩ, lịch trình và hạng vé nằm trong record concert để chỉ cần hai resource. Các ID bên trong các mảng là khóa nội bộ của giao diện, khác `id` tự sinh ở cấp record MockAPI.
 
+Tiết mục Biểu diễn/Đặc biệt chọn nghệ sĩ từ mảng artists và lưu `artistId` trong từng object của mảng schedule, kèm `performer` là tên nghệ sĩ. **Không thêm artistId thành field cấp resource**: schedule vẫn là Array, app tự lưu object bên trong khi PUT concert. Hoạt động giữ nội dung performer và artistId rỗng. Dữ liệu cũ không cần khởi tạo lại; các tiết mục khớp tên nghệ sĩ được nhận diện khi mở sửa. Khi lưu, liên kết ID được bổ sung tự động.
+
 ## 3. Resource bookings
 
 Tên chính xác: **bookings**. Để resource độc lập, không lồng trong events. Dùng các field sau; giữ lại field cũ nếu đã có:

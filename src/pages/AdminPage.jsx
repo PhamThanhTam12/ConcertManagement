@@ -20,6 +20,7 @@ import AdminBookings from "../components/AdminBookings";
 import { getBookings } from "../services/bookingService";
 import { getSold } from "../utils/booking";
 import { formatMoney } from "../utils/formatters";
+import { getSlotArtist } from "../utils/schedule";
 
 const editorNames = {
   artists: "nghệ sĩ",
@@ -99,7 +100,15 @@ export default function AdminPage() {
           ...current,
           featured: current.id === item.id,
         }));
-      await saveConcert({ ...concert, [editor.type]: items });
+      const updatedConcert = { ...concert, [editor.type]: items };
+      if (editor.type === "artists" && editor.item) {
+        updatedConcert.schedule = concert.schedule.map((slot) =>
+          getSlotArtist(slot, concert.artists)?.id === item.id
+            ? { ...slot, artistId: item.id, performer: item.name }
+            : slot,
+        );
+      }
+      await saveConcert(updatedConcert);
       setNotice("Đã lưu " + editorNames[editor.type] + ".");
       setEditor(null);
     } finally {
@@ -126,6 +135,17 @@ export default function AdminPage() {
           );
         await removeConcert();
       } else {
+        if (
+          deleteTarget.type === "artists" &&
+          concert.schedule.some(
+            (slot) =>
+              getSlotArtist(slot, concert.artists)?.id === deleteTarget.item.id,
+          )
+        ) {
+          throw new Error(
+            "Nghệ sĩ đang có tiết mục trong lịch trình. Hãy đổi nghệ sĩ hoặc xóa tiết mục liên quan trước.",
+          );
+        }
         if (deleteTarget.type === "ticketTypes") {
           const bookings = await getBookings(concert.id);
           if (getSold(deleteTarget.item.id, bookings) > 0)
@@ -349,7 +369,10 @@ export default function AdminPage() {
                           {slot.startTime} – {slot.endTime}
                         </td>
                         <td>{slot.title}</td>
-                        <td>{slot.performer}</td>
+                        <td>
+                          {getSlotArtist(slot, concert.artists)?.name ||
+                            slot.performer}
+                        </td>
                         <td>
                           <Badge
                             bg={
@@ -493,6 +516,7 @@ export default function AdminPage() {
             <ScheduleForm
               slot={editor.item}
               schedule={concert.schedule}
+              artists={concert.artists}
               onSubmit={handleSaveItem}
               onCancel={() => setEditor(null)}
             />

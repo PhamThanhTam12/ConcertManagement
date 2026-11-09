@@ -9,6 +9,7 @@ import Countdown from "../components/Countdown";
 import TicketCard from "../components/TicketCard";
 import { formatDate, toDateInput } from "../utils/formatters";
 import { isSalesOpen } from "../utils/booking";
+import { getSlotArtist } from "../utils/schedule";
 
 export default function HomePage() {
   const { concert, loading, error } = useConcert();
@@ -222,7 +223,10 @@ export default function HomePage() {
                             ? "WELCOME"
                             : "LIVE PERFORMANCE"}
                       </span>
-                      <h3>{slot.performer}</h3>
+                      <h3>
+                        {getSlotArtist(slot, concert.artists)?.name ||
+                          slot.performer}
+                      </h3>
                       <p>{slot.title}</p>
                     </div>
                   </article>

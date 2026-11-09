@@ -68,6 +68,7 @@ export default {
       endTime: "19:00",
       title: "Những điều chưa nói",
       performer: "MINH AN",
+      artistId: "a2",
       type: "performance",
     },
     {
@@ -76,6 +77,7 @@ export default {
       endTime: "19:40",
       title: "Giữa những tầng mây",
       performer: "MÂY",
+      artistId: "a4",
       type: "performance",
     },
     {
@@ -92,6 +94,7 @@ export default {
       endTime: "20:45",
       title: "No limits",
       performer: "KAI",
+      artistId: "a3",
       type: "performance",
     },
     {
@@ -100,6 +103,7 @@ export default {
       endTime: "21:30",
       title: "Chạm vào thanh âm",
       performer: "LUNA TRẦN",
+      artistId: "a1",
       type: "performance",
     },
     {

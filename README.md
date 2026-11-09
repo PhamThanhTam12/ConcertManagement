@@ -49,6 +49,14 @@ Thanh toán tại quầy giữ trạng thái pending. Thanh toán mô phỏng đ
 
 Số vé còn lại = capacity của hạng vé − tổng quantity của các đơn confirmed. App đọc lại dữ liệu trước POST để phát hiện thay đổi giá/tồn vé/hạn mức email. MockAPI không có transaction nên kiểm tra này không bảo đảm chống mua vượt tồn vé hoặc hạn mức khi nhiều máy gửi đồng thời. Không đổi slug `midnight-live-2026`, vì app dùng slug này để chọn record riêng trong resource events có thể chứa dữ liệu cũ.
 
+## Nghệ sĩ trong lịch trình
+
+Thêm/sửa tiết mục loại Biểu diễn hoặc Đặc biệt bằng cách chọn nghệ sĩ từ danh sách `concert.artists`. Danh sách được truyền qua props cho ScheduleForm và hiển thị bằng Form.Select của React Bootstrap. Bắt buộc chọn nghệ sĩ còn trong danh sách; nếu chưa có nghệ sĩ, hãy thêm ở tab Nghệ sĩ trước.
+
+Mỗi tiết mục lưu `artistId` để liên kết và `performer` là tên hiển thị. Khi sửa tên nghệ sĩ, các tiết mục liên quan được cập nhật cùng một PUT events/:id. Không cho xóa nghệ sĩ đang được dùng trong lịch trình; cần đổi nghệ sĩ hoặc xóa các tiết mục liên quan trước. Loại Hoạt động vẫn nhập nội dung tự do, bắt buộc và tối đa 150 ký tự, ví dụ check-in hoặc MC giới thiệu; khi lưu loại này artistId là chuỗi rỗng.
+
+Dữ liệu cũ chưa có artistId được đối chiếu theo tên nghệ sĩ khi mở sửa hoặc hiển thị. Nếu mô tả cũ không khớp nghệ sĩ nào, tên cũ vẫn hiện trên timeline; khi sửa, chọn nghệ sĩ có sẵn hoặc chuyển sang Hoạt động để giữ nội dung. `src/utils/schedule.js` dùng find để tìm nghệ sĩ theo ID/tên cũ; không thêm thư viện hay resource API.
+
 ## Cấu trúc src
 
 ```text
