@@ -38,7 +38,12 @@ export default function TicketCard({ ticket, remaining, open = true }) {
           : "Còn " + remaining + " vé"}
       </div>
       {user?.role === "admin" ? (
-        <Button as={Link} to="/admin" variant="outline-light" className="w-100">
+        <Button
+          as={Link}
+          to="/admin#tickets"
+          variant="outline-light"
+          className="w-100"
+        >
           Quản lý hạng vé
         </Button>
       ) : disabled ? (

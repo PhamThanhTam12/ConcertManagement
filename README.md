@@ -29,6 +29,10 @@ npm run preview
 
 Khách xem trang chủ và hạng vé. Người dùng đặt tối đa 6 vé/đơn, xem đơn của mình, hủy trước giờ diễn. Admin không đặt vé; admin quản lý thông tin, nghệ sĩ, lịch trình, hạng vé và các đơn của concert.
 
+Menu theo vai trò: user dùng **Lịch trình/Nghệ sĩ** để cuộn tới nội dung trang chủ và **Mua vé** để chọn hạng vé. Admin dùng **Lịch trình/Nghệ sĩ** để mở đúng tab quản lý, và **Đơn vé** để kiểm tra đơn của tất cả khách. Tab quản lý được lưu trong URL (`/admin#schedule`, `/admin#artists`, `/admin#bookings`), nên tải lại hoặc quay lại bằng trình duyệt vẫn mở đúng tab. Admin truy cập `/tickets` được chuyển tới quản lý đơn.
+
+Nếu đã đăng nhập nhưng chỉ thấy màn hình chưa có chương trình, cần khởi tạo dữ liệu concert bằng tài khoản admin. Thêm schema trên MockAPI chưa tạo ra record concert. User đã đăng nhập sẽ có nút **Kiểm tra lại chương trình**, thay vì bị yêu cầu đăng nhập lại.
+
 Đăng nhập được mô phỏng bằng mảng tài khoản frontend, Context và localStorage. MockAPI không xác thực quyền trên server. Đây là phạm vi bài frontend, chưa có xác thực server, thanh toán thật hoặc kiểm soát tồn vé đồng thời bằng giao dịch database.
 
 ## Luồng mua vé

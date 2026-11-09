@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Link,
-  NavLink,
-  Outlet,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Button, Container, Dropdown, Nav, Navbar } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
 import { useConcert } from "../context/ConcertContext";
@@ -16,12 +10,17 @@ export default function MainLayout() {
   const [expanded, setExpanded] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const isAdmin = user?.role === "admin";
 
   useEffect(() => {
-    if (location.hash)
+    if (location.pathname === "/" && location.hash)
       document.getElementById(location.hash.slice(1))?.scrollIntoView();
     else window.scrollTo({ top: 0, behavior: "instant" });
   }, [location.pathname, location.hash, concert]);
+
+  function scrollToSection(id) {
+    document.getElementById(id)?.scrollIntoView();
+  }
 
   function handleLogout() {
     logout();
@@ -64,24 +63,54 @@ export default function MainLayout() {
               className="ms-auto align-items-lg-center gap-lg-3"
               onSelect={() => setExpanded(false)}
             >
-              <Nav.Link as={NavLink} to="/" end eventKey="home">
+              <Nav.Link
+                as={Link}
+                to="/"
+                active={location.pathname === "/" && !location.hash}
+                eventKey="home"
+                onClick={() => window.scrollTo({ top: 0, behavior: "instant" })}
+              >
                 Trang chủ
               </Nav.Link>
-              <Nav.Link as={Link} to="/#lich-trinh" eventKey="schedule">
+              <Nav.Link
+                as={Link}
+                to={isAdmin ? "/admin#schedule" : "/#lich-trinh"}
+                active={
+                  isAdmin
+                    ? location.pathname === "/admin" &&
+                      location.hash === "#schedule"
+                    : location.pathname === "/" &&
+                      location.hash === "#lich-trinh"
+                }
+                eventKey="schedule"
+                onClick={() => !isAdmin && scrollToSection("lich-trinh")}
+              >
                 Lịch trình
               </Nav.Link>
-              <Nav.Link as={Link} to="/#nghe-si" eventKey="artists">
+              <Nav.Link
+                as={Link}
+                to={isAdmin ? "/admin#artists" : "/#nghe-si"}
+                active={
+                  isAdmin
+                    ? location.pathname === "/admin" &&
+                      location.hash === "#artists"
+                    : location.pathname === "/" && location.hash === "#nghe-si"
+                }
+                eventKey="artists"
+                onClick={() => !isAdmin && scrollToSection("nghe-si")}
+              >
                 Nghệ sĩ
               </Nav.Link>
             </Nav>
             <div className="nav-actions">
               <Button
                 as={Link}
-                to="/tickets"
+                to={isAdmin ? "/admin#bookings" : "/tickets"}
                 className="nav-ticket"
                 onClick={() => setExpanded(false)}
               >
-                Mua vé <span aria-hidden="true">→</span>
+                {isAdmin ? "Đơn vé" : "Mua vé"}{" "}
+                <span aria-hidden="true">→</span>
               </Button>
               {user ? (
                 <Dropdown align="end">
@@ -134,8 +163,13 @@ export default function MainLayout() {
               MIDNIGHT<span>LIVE.</span>
             </Link>
             <p>Âm nhạc kết nối. Kỷ niệm ở lại.</p>
-            <Link to="/tickets" className="footer-link">
-              Hẹn bạn dưới ánh đèn sân khấu →
+            <Link
+              to={isAdmin ? "/admin#bookings" : "/tickets"}
+              className="footer-link"
+            >
+              {isAdmin
+                ? "Kiểm tra đơn vé của khách →"
+                : "Hẹn bạn dưới ánh đèn sân khấu →"}
             </Link>
           </div>
           <div className="footer-bottom">

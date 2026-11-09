@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Alert,
   Badge,
@@ -38,7 +38,18 @@ export default function AdminPage() {
     saveConcert,
     removeConcert,
   } = useConcert();
-  const [activeTab, setActiveTab] = useState("info");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const selectedTab = location.hash.slice(1);
+  const activeTab = [
+    "info",
+    "artists",
+    "schedule",
+    "tickets",
+    "bookings",
+  ].includes(selectedTab)
+    ? selectedTab
+    : "info";
   const [initializing, setInitializing] = useState(false);
   const [setupError, setSetupError] = useState("");
   const [editor, setEditor] = useState(null);
@@ -159,6 +170,11 @@ export default function AdminPage() {
           )}
           <h2 className="h4">Khởi tạo Midnight Live</h2>
           <p>
+            Chưa có dữ liệu concert. Nhấn <strong>Khởi tạo dữ liệu mẫu</strong>{" "}
+            để có đủ nghệ sĩ, lịch trình và hạng vé trước khi sử dụng các mục
+            quản lý.
+          </p>
+          <p>
             Chuẩn bị hai resource <strong>events</strong> và{" "}
             <strong>bookings</strong> theo file <strong>MOCKAPI.md</strong>. URL
             của project đặt trong <strong>.env</strong>.
@@ -220,10 +236,11 @@ export default function AdminPage() {
       <Tabs
         activeKey={activeTab}
         onSelect={(key) => {
-          setActiveTab(key);
+          navigate("/admin#" + key);
           setNotice("");
         }}
         className="admin-tabs"
+        transition={false}
         mountOnEnter
         unmountOnExit
       >

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Accordion, Button, Col, Container, Row } from "react-bootstrap";
 import { useConcert } from "../context/ConcertContext";
+import { useAuth } from "../context/AuthContext";
 import ConcertState from "../components/ConcertState";
 import ConcertImage from "../components/ConcertImage";
 import Countdown from "../components/Countdown";
@@ -11,6 +12,8 @@ import { isSalesOpen } from "../utils/booking";
 
 export default function HomePage() {
   const { concert, loading, error } = useConcert();
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
   const [scheduleFilter, setScheduleFilter] = useState("all");
   if (loading || error || !concert) return <ConcertState />;
 
@@ -54,8 +57,9 @@ export default function HomePage() {
             Một đêm để cùng nhau sống hết mình.
           </p>
           <div className="d-flex flex-wrap gap-3 mt-4">
-            <Button as={Link} to="/tickets" size="lg">
-              Giữ chỗ cho bạn <span aria-hidden="true">→</span>
+            <Button as={Link} to={isAdmin ? "/admin" : "/tickets"} size="lg">
+              {isAdmin ? "Quản lý concert" : "Giữ chỗ cho bạn"}{" "}
+              <span aria-hidden="true">→</span>
             </Button>
             <Button
               as={Link}
@@ -294,8 +298,14 @@ export default function HomePage() {
                 <span>THỜI GIAN</span>
                 <strong>{formatDate(concert.startAt)}</strong>
               </div>
-              <Button as={Link} to="/tickets" className="mt-4">
-                Hẹn bạn tại concert →
+              <Button
+                as={Link}
+                to={isAdmin ? "/admin#bookings" : "/tickets"}
+                className="mt-4"
+              >
+                {isAdmin
+                  ? "Kiểm tra đơn vé của khách →"
+                  : "Hẹn bạn tại concert →"}
               </Button>
             </Col>
           </Row>

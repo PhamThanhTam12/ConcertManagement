@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useConcert } from "../context/ConcertContext";
+import { useAuth } from "../context/AuthContext";
 import ConcertState from "../components/ConcertState";
 import TicketCard from "../components/TicketCard";
 import { getBookings } from "../services/bookingService";
@@ -9,13 +11,14 @@ import { formatDate } from "../utils/formatters";
 
 export default function TicketsPage() {
   const { concert, loading, error } = useConcert();
+  const { user } = useAuth();
   const [bookings, setBookings] = useState([]);
   const [ticketLoading, setTicketLoading] = useState(true);
   const [ticketError, setTicketError] = useState("");
   const [retry, setRetry] = useState(0);
 
   useEffect(() => {
-    if (!concert?.id) return;
+    if (!concert?.id || user?.role === "admin") return;
     const controller = new AbortController();
     async function load() {
       try {
@@ -32,8 +35,9 @@ export default function TicketsPage() {
     }
     load();
     return () => controller.abort();
-  }, [concert?.id, retry]);
+  }, [concert?.id, retry, user?.role]);
 
+  if (user?.role === "admin") return <Navigate to="/admin#bookings" replace />;
   if (loading || error || !concert) return <ConcertState />;
   return (
     <Container className="page-space">

@@ -77,6 +77,10 @@ Sau khi có đúng hai resource và lưu schema:
 5. App kiểm tra concert đã tồn tại chưa, rồi POST record mới vào `/events` nếu cần. MockAPI tự sinh ID.
 6. Mở trang chủ: bạn sẽ thấy Midnight Live, countdown, 4 nghệ sĩ, 8 mục lịch trình và 3 hạng vé.
 
+Chỉ thêm field trong schema chưa tạo ra concert. Các record có giá trị như `title 1`, `slug 1`, `artists: []` là dữ liệu sinh ngẫu nhiên; app tìm riêng record có `slug` đúng `midnight-live-2026`. Nếu các trang cùng hiện **Chưa có chương trình được công bố**, hãy đăng nhập admin rồi nhấn **Khởi tạo dữ liệu mẫu**. Admin cũng có thể khởi tạo ngay tại màn hình này. Nút **Kiểm tra lại chương trình** giúp user đọc lại dữ liệu sau khi admin khởi tạo ở tab hoặc máy khác.
+
+Tên field ngày kết thúc phải chính xác là **endAt** (String), không phải `endate` hoặc `endDate`.
+
 Code không tự thay dữ liệu lỗi bằng dữ liệu local. Dữ liệu chỉ được gửi khi admin nhấn nút khởi tạo. Khi mở các trang, app đọc dữ liệu từ API.
 
 ## 5. File JSON có sẵn
