@@ -37,7 +37,7 @@ Nếu đã đăng nhập nhưng chỉ thấy màn hình chưa có chương trìn
 
 ## Luồng mua vé
 
-Chọn hạng vé → đăng nhập → nhập thông tin → kiểm tra đơn → xác nhận → Axios POST MockAPI → nhận mã đặt vé → xem tại Vé của tôi.
+Chọn hạng vé → đăng nhập → nhập thông tin → kiểm tra đơn → xác nhận → Axios POST MockAPI → thông báo đặt vé thành công → xem tại Vé của tôi.
 
 Thanh toán tại quầy giữ trạng thái pending. Thanh toán mô phỏng đặt trạng thái paid nhưng không thu tiền/không nhập thông tin ngân hàng. Khi hủy đơn mô phỏng đã paid, trạng thái chuyển refunded; đó không phải giao dịch hoàn tiền thật.
 

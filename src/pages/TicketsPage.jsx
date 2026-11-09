@@ -88,7 +88,7 @@ export default function TicketsPage() {
       <div className="purchase-notes">
         <span>01 · Chọn hạng vé</span>
         <span>02 · Điền thông tin</span>
-        <span>03 · Nhận mã đặt vé</span>
+        <span>03 · Hoàn tất đặt vé</span>
       </div>
     </Container>
   );

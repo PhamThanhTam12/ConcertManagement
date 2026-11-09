@@ -338,11 +338,13 @@ export default function HomePage() {
                   </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item eventKey="1">
-                  <Accordion.Header>Tôi nhận mã đặt vé ở đâu?</Accordion.Header>
+                  <Accordion.Header>
+                    Tôi xem lại đơn đặt vé ở đâu?
+                  </Accordion.Header>
                   <Accordion.Body>
-                    Sau khi xác nhận, mã đặt vé xuất hiện trên màn hình và được
-                    lưu trong Vé của tôi. Thông tin email lấy từ tài khoản đang
-                    đăng nhập.
+                    Sau khi đặt vé thành công, mở menu Tài khoản và chọn Vé của
+                    tôi để xem lại đơn đặt vé. Thông tin email lấy từ tài khoản
+                    đang đăng nhập.
                   </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item eventKey="2">

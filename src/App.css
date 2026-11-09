@@ -939,72 +939,6 @@ section[id] {
   background: #222c19;
   font-size: 1.6rem;
 }
-.issued-ticket {
-  max-width: 850px;
-  margin: 36px auto;
-  display: grid;
-  grid-template-columns: 1fr 240px;
-  border: 1px solid #4a4058;
-  border-radius: 16px;
-  text-align: left;
-  overflow: hidden;
-  background: linear-gradient(120deg, #292136, #1b1923);
-}
-.issued-ticket-main {
-  padding: 35px;
-}
-.issued-ticket h2 {
-  font-size: 2.2rem;
-  margin: 16px 0 20px;
-}
-.issued-ticket p {
-  font-size: 0.82rem;
-  color: #bfbbca;
-  margin: 9px 0;
-}
-.ticket-holder {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
-  border-top: 1px solid #4c415d;
-  margin-top: 28px;
-  padding-top: 20px;
-  font-size: 0.82rem;
-}
-.ticket-holder > span {
-  color: var(--accent);
-}
-.issued-ticket-stub {
-  padding: 30px 25px;
-  border-left: 1px dashed #847098;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  background: rgb(0 0 0 / 13%);
-}
-.issued-ticket-stub > span {
-  font-size: 0.65rem;
-  color: var(--muted);
-  text-align: center;
-}
-.issued-ticket-stub > strong {
-  font-size: 1.5rem;
-  color: var(--accent);
-}
-.ticket-barcode {
-  height: 45px;
-  width: 145px;
-  background: repeating-linear-gradient(
-    90deg,
-    #d8d6e2 0 2px,
-    transparent 2px 5px,
-    #d8d6e2 5px 6px,
-    transparent 6px 9px
-  );
-}
 
 /* 7. Quản lý dữ liệu và vé đã mua. */
 .stats-row {
@@ -1391,16 +1325,6 @@ section[id] {
     grid-template-columns: 95px 1fr;
     gap: 14px;
     font-size: 0.82rem;
-  }
-  .issued-ticket {
-    grid-template-columns: 1fr;
-  }
-  .issued-ticket-main {
-    padding: 27px;
-  }
-  .issued-ticket-stub {
-    border-left: 0;
-    border-top: 1px dashed #847098;
   }
   .stats-row {
     gap: 10px;

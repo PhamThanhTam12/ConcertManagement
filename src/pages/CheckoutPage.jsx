@@ -18,7 +18,7 @@ import FormField from "../components/FormField";
 import { getBookings, createBooking } from "../services/bookingService";
 import { getConcert } from "../services/concertService";
 import { getRemaining, isSalesOpen } from "../utils/booking";
-import { bookingCode, formatDate, formatMoney } from "../utils/formatters";
+import { formatDate, formatMoney } from "../utils/formatters";
 
 export default function CheckoutPage() {
   const { ticketId } = useParams();
@@ -35,7 +35,7 @@ function CheckoutContent({ ticketId }) {
   const [step, setStep] = useState("form");
   const [saving, setSaving] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [saved, setSaved] = useState(null);
+  const [bookingSuccess, setBookingSuccess] = useState(false);
   const ticket = concert?.ticketTypes.find((item) => item.id === ticketId);
   const remaining = ticket ? getRemaining(ticket, bookings) : 0;
 
@@ -131,7 +131,7 @@ function CheckoutContent({ ticketId }) {
         throw new Error(
           "Giá vé vừa thay đổi. Vui lòng tải lại trang để xác nhận giá mới.",
         );
-      const data = await createBooking({
+      await createBooking({
         eventId: latest.id,
         eventTitle: latest.title,
         eventStartAt: latest.startAt,
@@ -150,7 +150,7 @@ function CheckoutContent({ ticketId }) {
         status: "confirmed",
         createdAt: new Date().toISOString(),
       });
-      setSaved(data);
+      setBookingSuccess(true);
       window.scrollTo({ top: 0, behavior: "instant" });
     } catch (error) {
       setSubmitError(
@@ -173,41 +173,16 @@ function CheckoutContent({ ticketId }) {
         </Button>
       </Container>
     );
-  if (saved)
+  if (bookingSuccess)
     return (
       <Container className="page-space success-page">
         <div className="success-symbol" aria-hidden="true">
           ✓
         </div>
-        <span className="eyebrow">YOU'RE ON THE LIST</span>
-        <h1>Hẹn bạn tại Midnight Live!</h1>
-        <p className="text-body-secondary">
+        <h1>Đặt vé thành công!</h1>
+        <p className="text-body-secondary mb-4">
           Đơn đặt vé đã được xác nhận và lưu trong Vé của tôi.
         </p>
-        <article className="issued-ticket">
-          <div className="issued-ticket-main">
-            <span className="eyebrow">{saved.ticketName}</span>
-            <h2>{saved.eventTitle}</h2>
-            <p>{formatDate(saved.eventStartAt)}</p>
-            <p>{saved.eventLocation}</p>
-            <div className="ticket-holder">
-              <strong>{saved.fullName}</strong>
-              <span>
-                {saved.quantity} vé · {formatMoney(saved.totalPrice)}
-              </span>
-            </div>
-          </div>
-          <div className="issued-ticket-stub">
-            <span>MÃ ĐẶT VÉ</span>
-            <strong>{bookingCode(saved.id)}</strong>
-            <div className="ticket-barcode" aria-hidden="true" />
-            <span>
-              {saved.paymentMethod === "counter"
-                ? "Thanh toán tại quầy"
-                : "Đã thanh toán mô phỏng"}
-            </span>
-          </div>
-        </article>
         <div className="d-flex flex-wrap justify-content-center gap-3">
           <Button as={Link} to="/my-tickets">
             Xem vé của tôi →
@@ -233,7 +208,7 @@ function CheckoutContent({ ticketId }) {
       <div className="checkout-steps">
         <span className={step === "form" ? "active" : ""}>01 / Thông tin</span>
         <span className={step === "review" ? "active" : ""}>02 / Xác nhận</span>
-        <span>03 / Nhận vé</span>
+        <span>03 / Hoàn tất</span>
       </div>
       {checking ? (
         <div role="status" className="py-5">
