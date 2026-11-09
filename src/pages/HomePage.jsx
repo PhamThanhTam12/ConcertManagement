@@ -263,7 +263,8 @@ export default function HomePage() {
             ))}
           </Row>
           <p className="small text-body-secondary text-center mt-4">
-            Giá vé tính theo VNĐ. Tối đa 6 vé trong mỗi lần đặt.
+            Giá vé tính theo VNĐ. Mỗi email được đặt tối đa 6 vé còn hiệu lực
+            cho concert này.
           </p>
         </Container>
       </section>
@@ -333,8 +334,10 @@ export default function HomePage() {
                     Tôi có thể mua tối đa bao nhiêu vé?
                   </Accordion.Header>
                   <Accordion.Body>
-                    Mỗi đơn được đặt tối đa 6 vé, tùy số lượng còn lại của hạng
-                    vé. Bạn có thể xem các đơn đã đặt trong mục Vé của tôi.
+                    Mỗi email đăng ký vé được đặt tối đa 6 vé còn hiệu lực cho
+                    concert này, cộng tất cả hạng vé và các lần đặt. Đơn đã hủy
+                    không tính vào giới hạn. Bạn có thể dùng email khác tài
+                    khoản đăng nhập và xem các đơn đã đặt trong mục Vé của tôi.
                   </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item eventKey="1">
@@ -343,8 +346,8 @@ export default function HomePage() {
                   </Accordion.Header>
                   <Accordion.Body>
                     Sau khi đặt vé thành công, mở menu Tài khoản và chọn Vé của
-                    tôi để xem lại đơn đặt vé. Thông tin email lấy từ tài khoản
-                    đang đăng nhập.
+                    tôi để xem lại đơn đặt vé. Đơn thuộc tài khoản đã đặt, kể cả
+                    khi bạn nhập email đăng ký vé khác.
                   </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item eventKey="2">

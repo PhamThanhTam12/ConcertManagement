@@ -78,7 +78,15 @@ export default function AdminBookings({ concert }) {
   const visible = bookings.filter(
     (item) =>
       (status === "all" || item.status === status) &&
-      (bookingCode(item.id) + " " + item.email + " " + item.fullName)
+      (
+        bookingCode(item.id) +
+        " " +
+        item.email +
+        " " +
+        (item.accountEmail || "") +
+        " " +
+        item.fullName
+      )
         .toLowerCase()
         .includes(keyword.trim().toLowerCase()),
   );

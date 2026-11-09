@@ -17,7 +17,13 @@ import ConcertState from "../components/ConcertState";
 import FormField from "../components/FormField";
 import { getBookings, createBooking } from "../services/bookingService";
 import { getConcert } from "../services/concertService";
-import { getRemaining, isSalesOpen } from "../utils/booking";
+import {
+  EMAIL_TICKET_LIMIT,
+  getEmailRemaining,
+  getRemaining,
+  isSalesOpen,
+  normalizeEmail,
+} from "../utils/booking";
 import { formatDate, formatMoney } from "../utils/formatters";
 
 export default function CheckoutPage() {
@@ -75,6 +81,7 @@ function CheckoutContent({ ticketId }) {
         .min(2, "Họ tên cần ít nhất 2 ký tự.")
         .max(100, "Họ tên tối đa 100 ký tự."),
       email: Yup.string()
+        .trim()
         .required("Vui lòng nhập email.")
         .email("Email không hợp lệ."),
       phone: Yup.string()
@@ -86,18 +93,31 @@ function CheckoutContent({ ticketId }) {
         .integer("Số lượng phải là số nguyên.")
         .min(1, "Cần ít nhất 1 vé.")
         .max(
-          Math.min(6, remaining),
+          Math.min(EMAIL_TICKET_LIMIT, remaining),
           "Vượt quá số vé còn lại hoặc giới hạn 6 vé.",
         ),
       paymentMethod: Yup.string().oneOf(["counter", "simulation"]).required(),
       agree: Yup.boolean().oneOf([true], "Bạn cần đồng ý điều kiện đặt vé."),
     }),
-    onSubmit: async () => {
+    onSubmit: async (values) => {
       setSubmitError("");
+      const allowed = getEmailRemaining(values.email, bookings);
+      if (Number(values.quantity) > allowed) {
+        formik.setFieldError(
+          "quantity",
+          allowed === 0
+            ? "Email này đã đạt giới hạn 6 vé còn hiệu lực cho concert."
+            : "Email này chỉ được đặt thêm " + allowed + " vé cho concert.",
+        );
+        return;
+      }
       setStep("review");
       window.scrollTo({ top: 0, behavior: "instant" });
     },
   });
+
+  const emailRemaining = getEmailRemaining(formik.values.email, bookings);
+  const maxQuantity = Math.min(remaining, emailRemaining);
 
   async function confirmBooking() {
     if (saving || user.role !== "user") return;
@@ -118,13 +138,26 @@ function CheckoutContent({ ticketId }) {
       if (
         !Number.isInteger(quantity) ||
         quantity < 1 ||
-        quantity > 6 ||
+        quantity > EMAIL_TICKET_LIMIT ||
         quantity > getRemaining(currentTicket, currentBookings)
       ) {
         setBookings(currentBookings);
         setStep("form");
         throw new Error(
           "Số lượng vé vừa thay đổi. Vui lòng chọn lại số lượng.",
+        );
+      }
+      const email = normalizeEmail(formik.values.email);
+      const allowed = getEmailRemaining(email, currentBookings);
+      if (quantity > allowed) {
+        setBookings(currentBookings);
+        setStep("form");
+        throw new Error(
+          allowed === 0
+            ? "Email này đã đạt giới hạn 6 vé còn hiệu lực cho concert."
+            : "Hạn mức email vừa thay đổi. Email này chỉ được đặt thêm " +
+                allowed +
+                " vé cho concert.",
         );
       }
       if (Number(currentTicket.price) !== Number(ticket.price))
@@ -139,7 +172,8 @@ function CheckoutContent({ ticketId }) {
         ticketTypeId: currentTicket.id,
         ticketName: currentTicket.name,
         fullName: formik.values.fullName.trim(),
-        email: user.email,
+        email,
+        accountEmail: normalizeEmail(user.email),
         phone: formik.values.phone.trim(),
         quantity,
         unitPrice: Number(currentTicket.price),
@@ -263,10 +297,10 @@ function CheckoutContent({ ticketId }) {
                       <FormField
                         formik={formik}
                         name="email"
-                        label="Email"
+                        label="Email đăng ký vé"
                         type="email"
-                        readOnly
-                        help="Email lấy từ tài khoản đang đăng nhập."
+                        autoComplete="email"
+                        help="Có thể dùng email khác tài khoản đăng nhập. Mỗi email được đặt tối đa 6 vé còn hiệu lực cho concert này."
                       />
                       <FormField
                         formik={formik}
@@ -274,9 +308,15 @@ function CheckoutContent({ ticketId }) {
                         label="Số lượng vé"
                         type="number"
                         min={1}
-                        max={Math.min(6, remaining)}
+                        max={maxQuantity}
                         step={1}
-                        help={"Còn " + remaining + " vé. Tối đa 6 vé mỗi đơn."}
+                        help={
+                          "Hạng vé còn " +
+                          remaining +
+                          " vé. Email này có thể đặt thêm " +
+                          emailRemaining +
+                          " vé."
+                        }
                       />
                       <h3 className="h6 mt-4 mb-3">Hình thức thanh toán</h3>
                       <div className="payment-options">
@@ -331,8 +371,8 @@ function CheckoutContent({ ticketId }) {
                   <dl className="order-details">
                     <dt>Người đặt</dt>
                     <dd>{formik.values.fullName.trim()}</dd>
-                    <dt>Email</dt>
-                    <dd>{user.email}</dd>
+                    <dt>Email đăng ký vé</dt>
+                    <dd>{normalizeEmail(formik.values.email)}</dd>
                     <dt>Số điện thoại</dt>
                     <dd>{formik.values.phone}</dd>
                     <dt>Hạng vé</dt>

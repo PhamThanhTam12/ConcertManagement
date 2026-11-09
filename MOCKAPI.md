@@ -55,6 +55,7 @@ Tên chính xác: **bookings**. Để resource độc lập, không lồng trong
 | ticketName    | String                        |
 | fullName      | String                        |
 | email         | String                        |
+| accountEmail  | String                        |
 | phone         | String                        |
 | paymentMethod | String                        |
 | paymentStatus | String                        |
@@ -65,6 +66,13 @@ Tên chính xác: **bookings**. Để resource độc lập, không lồng trong
 | totalPrice    | Number                        |
 
 Không cần nhấn Generate để sinh đơn ngẫu nhiên. Form mua vé sẽ POST đơn thật của bài. Các đơn cũ được giữ lại và app chỉ chọn đơn có eventId trùng concert đang dùng.
+
+**Cập nhật email đăng ký vé:** thêm field **accountEmail**, kiểu **String**, vào schema bookings rồi nhấn Update. Không đổi tên field email đang có. Không cần khởi tạo lại concert.
+
+- `email`: email đăng ký vé, nhập tùy chọn trong form. Mỗi email có tối đa 6 vé còn hiệu lực cho concert, cộng mọi hạng vé/lần đặt và bỏ các đơn đã hủy. App chuẩn hóa khoảng trắng ngoài và chữ hoa/thường.
+- `accountEmail`: email tài khoản đã đăng nhập, do code tự gửi khi POST. Dùng để xem và hủy đơn trong Vé của tôi dù email đăng ký vé khác tài khoản. Admin xem và tìm kiếm theo cả hai email.
+- Đơn cũ chưa có accountEmail hợp lệ vẫn dùng email cũ để xác định chủ đơn. Nếu sửa dữ liệu cũ thủ công, đặt accountEmail bằng tài khoản đã đặt, ví dụ user@concert.test; không thay email đăng ký vé để chuyển chủ đơn.
+- App chưa gửi thư/vé qua email; hai field trên là dữ liệu lưu trên MockAPI.
 
 ## 4. Nạp toàn bộ dữ liệu mẫu bằng giao diện
 

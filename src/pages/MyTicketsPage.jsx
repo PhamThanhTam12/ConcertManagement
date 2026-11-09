@@ -71,7 +71,9 @@ export default function MyTicketsPage() {
       <div className="page-heading compact">
         <span className="eyebrow">YOUR NEXT MEMORIES</span>
         <h1>Vé của tôi.</h1>
-        <p>Những cuộc hẹn cùng âm nhạc của bạn.</p>
+        <p>
+          Các đơn bạn đã đặt, kể cả khi dùng email đăng ký vé khác tài khoản.
+        </p>
       </div>
       <div className="stats-row">
         <div>

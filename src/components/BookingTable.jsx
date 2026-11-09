@@ -1,5 +1,6 @@
 import { Badge, Button, Table } from "react-bootstrap";
 import { bookingCode, formatMoney } from "../utils/formatters";
+import { normalizeEmail } from "../utils/booking";
 
 const paymentLabels = {
   pending: "Chờ thanh toán",
@@ -33,6 +34,13 @@ export default function BookingTable({ bookings, onCancel, canCancel }) {
               <td>
                 <strong>{booking.fullName}</strong>
                 <span className="table-detail">{booking.email}</span>
+                {normalizeEmail(booking.accountEmail).includes("@") &&
+                  normalizeEmail(booking.accountEmail) !==
+                    normalizeEmail(booking.email) && (
+                    <span className="table-detail">
+                      Tài khoản đặt: {booking.accountEmail}
+                    </span>
+                  )}
               </td>
               <td>{booking.ticketName}</td>
               <td>{booking.quantity}</td>
